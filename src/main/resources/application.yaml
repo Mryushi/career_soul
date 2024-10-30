@@ -1,0 +1,27 @@
+# 服务端口配置，用于指定应用启动时监听的端口号
+server:
+  port: 8081
+
+# MyBatis 配置
+mybatis:
+  # 指定 MyBatis 的 Mapper 文件位置
+  mapper-locations: classpath:mappers/*.xml
+  # 指定 MyBatis 的实体类包路径
+  type-aliases-package: com.maiqu.career_soul.mybatis.entity
+  configuration:
+    # 配置 MyBatis 日志实现
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启下划线到驼峰命名的自动转换
+    map-underscore-to-camel-case: true
+
+# 数据源配置
+spring:
+  datasource:
+    # 数据库驱动类名
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接 URL
+    url: jdbc:mysql://localhost:3306/career_soul
+    # 数据库用户名
+    username: root
+    # 数据库密码
+    password: 3425488440
