@@ -18,7 +18,7 @@ import java.util.List;
 public class AlibabaAIUtil {
 
     //阿里云 API 密钥
-    private static final String API_KEY = "sk-fd06a3c57d3a4a1f92b820b9ae53484f";
+    private static final String API_KEY = "";
 
     /**
      * 获取 AI 响应并更新消息列表
