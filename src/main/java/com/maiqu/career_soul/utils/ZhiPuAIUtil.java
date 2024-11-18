@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 public class ZhiPuAIUtil {
-    private static final String API_KEY = "8ef79754169adb402446d36bfd505f40.bfZGmbeLe4s3v4Xo";
+    private static final String API_KEY = "";
     private static final ClientV4 client = new ClientV4.Builder(API_KEY)
             .build();
 
