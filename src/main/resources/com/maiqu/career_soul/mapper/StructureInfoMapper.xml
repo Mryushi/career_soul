@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maiqu.career_soul.mapper.StructureInfoMapper">
+
+    <update id="updateUserInfo" parameterType="com.maiqu.career_soul.javabean.pojo.UserInfo">
+        UPDATE user_info
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+            <if test="birthDate != null">
+                birth_date = #{birthDate},
+            </if>
+            <if test="gender != null and gender != ''">
+                gender = #{gender},
+            </if>
+            <if test="personalityTraits != null and personalityTraits != ''">
+                personality_traits = #{personalityTraits},
+            </if>
+            <if test="hobbies != null and hobbies != ''">
+                hobbies = #{hobbies},
+            </if>
+            <if test="eduLevel != null and eduLevel != ''">
+                edu_level = #{eduLevel},
+            </if>
+            <if test="majorLevel != null and majorLevel != ''">
+                major_level = #{majorLevel},
+            </if>
+            <if test="currentGrade != null and currentGrade != ''">
+                current_grade = #{currentGrade},
+            </if>
+            <if test="undergraduateCollege != null and undergraduateCollege != ''">
+                undergraduate_college = #{undergraduateCollege},
+            </if>
+            <if test="masterCollege != null and masterCollege != ''">
+                master_college = #{masterCollege},
+            </if>
+            <if test="doctorCollege != null and doctorCollege != ''">
+                doctor_college = #{doctorCollege},
+            </if>
+            <if test="undergraduateMajor != null and undergraduateMajor != ''">
+                undergraduate_major = #{undergraduateMajor},
+            </if>
+            <if test="masterMajor != null and masterMajor != ''">
+                master_major = #{masterMajor},
+            </if>
+            <if test="doctorMajor != null and doctorMajor != ''">
+                doctor_major = #{doctorMajor},
+            </if>
+            <if test="advantageSubjects != null and advantageSubjects != ''">
+                advantage_subjects = #{advantageSubjects},
+            </if>
+            <if test="targetIndustry != null and targetIndustry != ''">
+                target_industry = #{targetIndustry},
+            </if>
+            <if test="targetPosition != null and targetPosition != ''">
+                target_position = #{targetPosition},
+            </if>
+            <if test="salaryExpectation != null and salaryExpectation != ''">
+                salary_expectation = #{salaryExpectation},
+            </if>
+            <if test="workLocation != null and workLocation != ''">
+                work_location = #{workLocation},
+            </if>
+            <if test="resourceFrom != null and resourceFrom != ''">
+                resource_from = #{resourceFrom},
+            </if>
+            <if test="neededGuidance != null and neededGuidance != ''">
+                needed_guidance = #{neededGuidance},
+            </if>
+            <if test="projectExperience != null and projectExperience != ''">
+                project_experience = #{projectExperience},
+            </if>
+        </set>
+        WHERE user_id = #{userId}
+    </update>
+
+    <select id="getBaseReportInfo" resultType="com.maiqu.career_soul.javabean.pojo.UserInfo">
+        SELECT undergraduate_college,
+               master_college,
+               doctor_college,
+               undergraduate_major,
+               master_major,
+               doctor_major,
+               target_position,
+               work_location,
+               hobbies,
+               personality_traits,
+               salary_expectation
+        FROM user_info
+        WHERE user_id = #{userId}
+    </select>
+
+</mapper>

@@ -1,4 +1,4 @@
-package com.maiqu.career_soul.pojo;
+package com.maiqu.career_soul.javabean.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Messages {
 
-    private Integer messageId;
-    private Integer conversationId;
+    private Long messageId;
+    private Long conversationId;
     private String userMessage;
     private String aiMessage;
 }

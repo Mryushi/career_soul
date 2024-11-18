@@ -1,4 +1,4 @@
-package com.maiqu.career_soul.pojo;
+package com.maiqu.career_soul.javabean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

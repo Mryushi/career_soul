@@ -43,6 +43,13 @@
             <version>2.16.6</version>
         </dependency>
 
+        <!--智谱MaaS平台AI-SDK-->
+        <dependency>
+            <groupId>cn.bigmodel.openapi</groupId>
+            <artifactId>oapi-java-sdk</artifactId>
+            <version>release-V4-2.3.0</version>
+        </dependency>
+
         <!--lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -55,8 +62,8 @@
             <version>3.12.0</version>
         </dependency>
 
-
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

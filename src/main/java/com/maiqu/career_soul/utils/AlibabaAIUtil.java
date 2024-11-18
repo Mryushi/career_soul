@@ -8,7 +8,7 @@ import com.alibaba.dashscope.common.Role;
 import com.alibaba.dashscope.exception.ApiException;
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
-import com.maiqu.career_soul.pojo.Messages;
+import com.maiqu.career_soul.javabean.pojo.Messages;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 public class AlibabaAIUtil {
 
     //阿里云 API 密钥
-    private static final String API_KEY = "";
+    private static final String API_KEY = "sk-fd06a3c57d3a4a1f92b820b9ae53484f";
 
     /**
      * 获取 AI 响应并更新消息列表
@@ -30,13 +30,14 @@ public class AlibabaAIUtil {
      * @throws NoApiKeyException     没有 API 密钥异常
      * @throws InputRequiredException 输入必需异常
      */
-    public static GenerationResult getAIResponse(List<Message> messages, String model) throws ApiException, NoApiKeyException, InputRequiredException {
+    public static GenerationResult getQwenResponse(List<Message> messages, String model, Boolean enableSearch) throws ApiException, NoApiKeyException, InputRequiredException {
         Generation gen = new Generation();
         GenerationParam param = GenerationParam.builder()
                 .apiKey(API_KEY)
                 .model(model)
                 .messages(messages)
                 .resultFormat(GenerationParam.ResultFormat.MESSAGE)
+                .enableSearch(enableSearch)
                 .build();
 
         return gen.call(param);
@@ -48,8 +49,13 @@ public class AlibabaAIUtil {
      * @param messagesList 数据库消息列表
      * @return 模型需求的对话消息列表
      */
-    public static List<Message> makeChatMessages(List<Messages> messagesList) {
+    public static List<Message> makeQwenMessages(List<Messages> messagesList, String systemPrompt) {
         List<Message> chatMessages = new ArrayList<>();
+        chatMessages.add(Message.builder().role(Role.SYSTEM.getValue()).content(systemPrompt).build());
+
+        if (messagesList.isEmpty()) {
+            return chatMessages;
+        }
 
         for (int i = 0; i < messagesList.size(); i++) {
             Messages messages = messagesList.get(i);

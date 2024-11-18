@@ -1,4 +1,4 @@
-package com.maiqu.career_soul.pojo;
+package com.maiqu.career_soul.javabean.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Conversations {
 
-    private Integer conversationId;
-    private Integer userId;
-    private Integer agentId;
+    private Long conversationId;
+    private Long userId;
+    private String agentName;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }
