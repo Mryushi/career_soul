@@ -1,10 +1,11 @@
 package com.maiqu.career_soul.javabean.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -12,13 +13,13 @@ import java.time.LocalDate;
 public class UserInfo {
     private Long userId;
     private String userName;
-    private String tel;
-    private String birthDate;
-    private String gender; // 0: 男, 1: 女
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date birthDate;
+    private String gender;
     private String personalityTraits;
     private String hobbies;
 
-    private String eduLevel;
     private String majorLevel;
     private String currentGrade;
     private String undergraduateCollege;
@@ -33,8 +34,11 @@ public class UserInfo {
     private String targetPosition;
     private String salaryExpectation;
     private String workLocation;
-    private String resourceFrom;
-    private String neededGuidance;
+    private String futurePlan;
+    private String marketUnderstanding;
+    private String infoProvide;
+    private String abilityImprove;
     private String projectExperience;
 
+    private String personalInfo;
 }

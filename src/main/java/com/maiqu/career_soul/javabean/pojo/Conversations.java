@@ -14,6 +14,6 @@ public class Conversations {
     private Long conversationId;
     private Long userId;
     private String agentName;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 }

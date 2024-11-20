@@ -13,7 +13,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 
 @RestController
-@RequestMapping("maiqu/structured_info")
+@RequestMapping("maiqu/career_soul/structured_info")
 public class StructuredInfoController {
 
     @Autowired

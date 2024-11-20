@@ -62,4 +62,5 @@ public class ReportSystemPrompt {
             "[提升方向]：\n" +
             "[具体内容]\n" +
             "...";
+
 }

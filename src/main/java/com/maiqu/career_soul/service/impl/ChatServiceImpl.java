@@ -24,10 +24,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 聊天服务实现类
+ */
 @Slf4j
 @Service
 public class ChatServiceImpl implements ChatService {
 
+    /**
+     * 存储不同聊天的系统提示词
+     */
     private static final Map<String, String> CHAT_AGENT_SYSTEM_MESSAGES = new HashMap<>();
 
     static {
@@ -48,6 +54,12 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     private ZhiPuAIUtil zhiPuAIUtil;
 
+    /**
+     * 获取聊天响应
+     *
+     * @param chatRequest 聊天请求对象，包含会话ID、用户输入和代理名称
+     * @return 根据不同代理返回相应的聊天响应
+     */
     @Override
     public String getResponse(ChatRequest chatRequest) {
         Long conversationsId = chatRequest.getConversationsId();
@@ -57,26 +69,41 @@ public class ChatServiceImpl implements ChatService {
         String agentSystemMessage = CHAT_AGENT_SYSTEM_MESSAGES.get(agentName);
 
         if (agentName.equals("Chat")) {
-            chatRequest.setUserId(1L);
             return getGLMEmohaaResponse(chatRequest);
         } else {
-            return getAliQwenResponse(conversationsId, userInput, "qwen-max", agentSystemMessage);
+            return getAliQwenResponse(conversationsId, userInput, "qwen-turbo-2024-09-19", agentSystemMessage);
         }
     }
 
+    /**
+     * 添加会话记录
+     *
+     * @param userId 用户ID
+     * @param agentName 代理名称
+     * @return 新增会话的ID
+     */
     @Override
     public Long addConversation(Long userId, String agentName) {
         Conversations conversations = new Conversations();
         conversations.setUserId(userId);
         conversations.setAgentName(agentName);
-        conversations.setCreateTime(LocalDateTime.now());
-        conversations.setUpdateTime(LocalDateTime.now());
+        conversations.setCreatedTime(LocalDateTime.now());
+        conversations.setUpdatedTime(LocalDateTime.now());
 
         chatMapper.addConversation(conversations);
 
         return conversations.getConversationId();
     }
 
+    /**
+     * 获取阿里云Qwen模型的响应
+     *
+     * @param conversationsId 会话ID
+     * @param userInput 用户输入
+     * @param model 模型名称
+     * @param testSystemMessage 系统消息
+     * @return 阿里云Qwen模型的响应内容
+     */
     private String getAliQwenResponse(Long conversationsId, String userInput, String model, String testSystemMessage) {
         List<Messages> messages = chatMapper.getMessagesByConversationId(conversationsId);
 
@@ -97,6 +124,12 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
+    /**
+     * 获取GLM-Emohaa模型的响应
+     *
+     * @param chatRequest 聊天请求对象
+     * @return GLM-Emohaa模型的响应内容
+     */
     private String getGLMEmohaaResponse(ChatRequest chatRequest) {
         Long userId = chatRequest.getUserId();
         Long conversationsId = chatRequest.getConversationsId();
@@ -107,20 +140,8 @@ public class ChatServiceImpl implements ChatService {
         chatMessages.add(new ChatMessage(ChatMessageRole.USER.value(), userInput));
 
         UserInfo userInfo = structureInfoMapper.getUserInfo(userId);
-        String eduLevel = userInfo.getEduLevel();
-
         StringBuilder userInfoBuilder = new StringBuilder();
         userInfoBuilder.append("我是一名高校" + userInfo.getGender() + "学生，我的专业是");
-
-//        userInfoBuilder.append("我是一名" + userInfo.getCurrentGrade() + "的" + userInfo.getGender() + "学生，我的专业是");
-//        if (eduLevel.equals("博士")) {
-//            userInfoBuilder.append(userInfo.getDoctorMajor());
-//        } else if (eduLevel.equals("硕士")) {
-//            userInfoBuilder.append(userInfo.getMasterMajor());
-//        } else if (eduLevel.equals("本科")) {
-//            userInfoBuilder.append(userInfo.getUndergraduateMajor());
-//        }
-//        userInfoBuilder.append("。");
 
         if (!userInfo.getHobbies().isEmpty()) {
             userInfoBuilder.append("我的爱好是" + userInfo.getHobbies() + "。");
@@ -132,16 +153,25 @@ public class ChatServiceImpl implements ChatService {
 
         String userInfoStr = userInfoBuilder.toString();
         String userName = userInfo.getUserName();
-        String aiResponse = zhiPuAIUtil.getGLMEmohaaResponse(chatMessages, userName, userInfoStr);
+        String aiResponse = zhiPuAIUtil.getGLMEmohaaResponse(chatMessages, userName, userInfoStr).stripTrailing();
 
+        writeIntoDB(conversationsId, userInput, aiResponse);
         return aiResponse;
     }
 
+    /**
+     * 将聊天记录写入数据库
+     *
+     * @param conversationsId 会话ID
+     * @param userInput 用户输入
+     * @param content AI响应内容
+     */
     private void writeIntoDB(Long conversationsId, String userInput, String content) {
         Messages messagesAfterAI = new Messages();
         messagesAfterAI.setConversationId(conversationsId);
         messagesAfterAI.setAiMessage(content);
         messagesAfterAI.setUserMessage(userInput);
+        messagesAfterAI.setCreatedTime(LocalDateTime.now());
         chatMapper.addMessage(messagesAfterAI);
     }
 }

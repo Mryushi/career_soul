@@ -12,7 +12,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 
 @RestController
-@RequestMapping("maiqu/chat")
+@RequestMapping("maiqu/career_soul/chat")
 public class ChatController {
 
     private static final List<String> agents = new ArrayList<>();

@@ -7,12 +7,6 @@
     <update id="updateUserInfo" parameterType="com.maiqu.career_soul.javabean.pojo.UserInfo">
         UPDATE user_info
         <set>
-            <if test="userName != null and userName != ''">
-                user_name = #{userName},
-            </if>
-            <if test="tel != null and tel != ''">
-                tel = #{tel},
-            </if>
             <if test="birthDate != null">
                 birth_date = #{birthDate},
             </if>
@@ -24,9 +18,6 @@
             </if>
             <if test="hobbies != null and hobbies != ''">
                 hobbies = #{hobbies},
-            </if>
-            <if test="eduLevel != null and eduLevel != ''">
-                edu_level = #{eduLevel},
             </if>
             <if test="majorLevel != null and majorLevel != ''">
                 major_level = #{majorLevel},
@@ -67,11 +58,17 @@
             <if test="workLocation != null and workLocation != ''">
                 work_location = #{workLocation},
             </if>
-            <if test="resourceFrom != null and resourceFrom != ''">
-                resource_from = #{resourceFrom},
+            <if test="futurePlan != null and futurePlan != ''">
+                future_plan = #{futurePlan},
             </if>
-            <if test="neededGuidance != null and neededGuidance != ''">
-                needed_guidance = #{neededGuidance},
+            <if test="marketUnderstanding != null and marketUnderstanding != ''">
+                market_understanding = #{marketUnderstanding},
+            </if>
+            <if test="infoProvide != null and infoProvide != ''">
+                info_provide = #{infoProvide},
+            </if>
+            <if test="abilityImprove != null and abilityImprove != ''">
+                ability_improve = #{abilityImprove},
             </if>
             <if test="projectExperience != null and projectExperience != ''">
                 project_experience = #{projectExperience},
@@ -79,21 +76,5 @@
         </set>
         WHERE user_id = #{userId}
     </update>
-
-    <select id="getBaseReportInfo" resultType="com.maiqu.career_soul.javabean.pojo.UserInfo">
-        SELECT undergraduate_college,
-               master_college,
-               doctor_college,
-               undergraduate_major,
-               master_major,
-               doctor_major,
-               target_position,
-               work_location,
-               hobbies,
-               personality_traits,
-               salary_expectation
-        FROM user_info
-        WHERE user_id = #{userId}
-    </select>
 
 </mapper>

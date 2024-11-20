@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegister {
+public class Register {
     private Long registerId;
-    private String tel;
     private String userName;
-    private String verifiCode;
-    private LocalDate createdTime;
-    private LocalDate updatedTime;
+    private String password;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 }

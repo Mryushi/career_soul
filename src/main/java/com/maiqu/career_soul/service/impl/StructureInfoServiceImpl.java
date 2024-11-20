@@ -11,7 +11,6 @@ import com.maiqu.career_soul.prompt.ReportSystemPrompt;
 import com.maiqu.career_soul.service.StructureInfoService;
 import com.maiqu.career_soul.utils.AlibabaAIUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +19,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 实现结构化信息生成报告的服务
+ */
 @Slf4j
 @Service
 public class StructureInfoServiceImpl implements StructureInfoService {
 
+    // 存储报告提示词
     private static final Map<String, String> REPORT_SYSTEM_MESSAGES = new HashMap<>();
 
+    //静态代码块，用于初始化报告提示词
     static {
         REPORT_SYSTEM_MESSAGES.put("positionCompatibility", ReportSystemPrompt.POSITION_COMPATIBILITY_SYSTEM_MESSAGE);
         REPORT_SYSTEM_MESSAGES.put("careerAdvice", ReportSystemPrompt.careerAdvice_SYSTEM_MESSAGE);
@@ -37,16 +41,9 @@ public class StructureInfoServiceImpl implements StructureInfoService {
     @Autowired
     private AlibabaAIUtil alibabaAIUtil;
 
+
     @Override
     public void updateUserInfo(UserInfo userInfo) {
-//        if (!userInfo.getDoctorCollege().isEmpty()) {
-//            userInfo.setEduLevel("博士");
-//        } else if (!userInfo.getMasterCollege().isEmpty()) {
-//            userInfo.setEduLevel("硕士");
-//        } else if (!userInfo.getUndergraduateCollege().isEmpty()) {
-//            userInfo.setEduLevel("本科");
-//        }
-
         structureInfoMapper.updateUserInfo(userInfo);
     }
 
@@ -62,7 +59,8 @@ public class StructureInfoServiceImpl implements StructureInfoService {
     public Report getReport(Long userId) {
         Report report = new Report();
 
-        UserInfo baseInfo = structureInfoMapper.getBaseReportInfo(userId);
+        // 获取数据库中的用户信息
+        UserInfo baseInfo = structureInfoMapper.getUserInfo(userId);
 
         if (!baseInfo.getDoctorCollege().isEmpty()) {
             report.setEduLevel("博士");
@@ -84,27 +82,30 @@ public class StructureInfoServiceImpl implements StructureInfoService {
         report.setPersonalityTraits(baseInfo.getPersonalityTraits());
         report.setSalaryExpectation(baseInfo.getSalaryExpectation());
 
-        // 用户信息
+        // 用户基本信息
         String userInfo = report.toString();
 
-        String positionCompatibility = getReportResponse(userInfo, "qwen-max", REPORT_SYSTEM_MESSAGES.get("positionCompatibility"));
+        // 获取报告中的岗位匹配度（AI）
+        String positionCompatibility = getReportResponse(userInfo, "qwen-turbo-2024-09-19", REPORT_SYSTEM_MESSAGES.get("positionCompatibility"));
         report.setPositionCompatibility(positionCompatibility);
 
-        String careerAdvice = getReportResponse(userInfo, "qwen-turbo-latest", REPORT_SYSTEM_MESSAGES.get("careerAdvice"));
+        // 获取报告中的职业建议（AI）
+        String careerAdvice = getReportResponse(userInfo, "qwen-turbo-2024-09-19", REPORT_SYSTEM_MESSAGES.get("careerAdvice"));
         report.setCareerAdvice(careerAdvice);
 
         return report;
     }
 
-    private String getReportResponse(String userInput,String model, String reportSystemMessage) {
+    private String getReportResponse(String userInfo, String model, String reportSystemMessage) {
         List<Message> chatMessages = new ArrayList<>();
 
         // 报告生成内容提示词
         chatMessages.add(Message.builder().role(Role.SYSTEM.getValue()).content(reportSystemMessage).build());
 
         // 用户基本信息
-        chatMessages.add(Message.builder().role(Role.USER.getValue()).content(userInput).build());
+        chatMessages.add(Message.builder().role(Role.USER.getValue()).content(userInfo).build());
 
+        // 调用模型
         GenerationResult aiResponse = null;
         try {
             aiResponse = alibabaAIUtil.getQwenResponse(chatMessages, model, true);
