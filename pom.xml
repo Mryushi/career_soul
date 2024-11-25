@@ -101,7 +101,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.maiqu.career_soul.CareerSoulApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

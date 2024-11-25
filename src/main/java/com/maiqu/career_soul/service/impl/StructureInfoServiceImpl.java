@@ -62,13 +62,13 @@ public class StructureInfoServiceImpl implements StructureInfoService {
         // 获取数据库中的用户信息
         UserInfo baseInfo = structureInfoMapper.getUserInfo(userId);
 
-        if (!baseInfo.getDoctorCollege().isEmpty()) {
+        if (baseInfo.getDoctorCollege() != null && !baseInfo.getDoctorCollege().isEmpty()) {
             report.setEduLevel("博士");
             report.setMajor(baseInfo.getDoctorMajor());
-        } else if (!baseInfo.getMasterCollege().isEmpty()) {
+        } else if (baseInfo.getMasterCollege() != null && !baseInfo.getMasterCollege().isEmpty()) {
             report.setEduLevel("硕士");
             report.setMajor(baseInfo.getMasterMajor());
-        } else if (!baseInfo.getUndergraduateCollege().isEmpty()) {
+        } else if (baseInfo.getUndergraduateCollege() != null && !baseInfo.getUndergraduateCollege().isEmpty()) {
             report.setEduLevel("本科");
             report.setMajor(baseInfo.getUndergraduateMajor());
         } else {

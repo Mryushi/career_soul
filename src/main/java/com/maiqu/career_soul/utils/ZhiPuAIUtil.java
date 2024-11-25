@@ -19,6 +19,7 @@ public class ZhiPuAIUtil {
 
     // API密钥，用于访问ZhiPuAI服务
     private static final String API_KEY = Objects.requireNonNullElse(System.getenv("GLM_API_KEY"), null);
+
     // 客户端实例，用于调用ZhiPuAI服务
     private static final ClientV4 client = new ClientV4.Builder(API_KEY)
             .build();
