@@ -17,6 +17,8 @@ public class RegisterAndLoginController {
 
     @PostMapping("register")
     public Result register(@RequestBody Register register) {
+        System.out.println("register: " + register);
+
         Result result = new Result();
 
         String userName = register.getUserName();
@@ -54,6 +56,7 @@ public class RegisterAndLoginController {
 
     @PostMapping("login")
     public Result login(@RequestBody Register register) {
+        System.out.println("login: " + register);
         Result result = new Result();
 
         String userName = register.getUserName();

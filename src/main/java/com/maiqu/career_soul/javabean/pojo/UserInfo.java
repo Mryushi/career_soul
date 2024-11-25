@@ -14,7 +14,7 @@ public class UserInfo {
     private Long userId;
     private String userName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date birthDate;
     private String gender;
     private String personalityTraits;
@@ -34,11 +34,16 @@ public class UserInfo {
     private String targetPosition;
     private String salaryExpectation;
     private String workLocation;
+    //未来规划
     private String futurePlan;
+    //对就业市场的了解情况
     private String marketUnderstanding;
+    //信息提供
     private String infoProvide;
+    //能力提升
     private String abilityImprove;
     private String projectExperience;
 
+    //用户信息总结，后端拼接   或者  AI总结（前端需考虑触发时机）
     private String personalInfo;
 }

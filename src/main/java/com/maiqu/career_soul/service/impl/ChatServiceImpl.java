@@ -119,7 +119,6 @@ public class ChatServiceImpl implements ChatService {
 
             return content;
         } catch (Exception e) {
-            log.error("模型返回异常：" + aiResponse);
             return "400";
         }
     }

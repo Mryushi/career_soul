@@ -13,12 +13,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * 用于处理与阿里云AI模型交互的工具类
+ */
 @Component
 public class AlibabaAIUtil {
 
     //阿里云 API 密钥
-    private static final String API_KEY = "sk-fd06a3c57d3a4a1f92b820b9ae53484f";
+    private static final String API_KEY = Objects.requireNonNullElse(System.getenv("QWEN_API_KEY"), null);
 
     /**
      * 获取 AI 响应并更新消息列表
@@ -40,7 +44,8 @@ public class AlibabaAIUtil {
                 .enableSearch(enableSearch)
                 .build();
 
-        return gen.call(param);
+        GenerationResult result = gen.call(param);
+        return result;
     }
 
     /**
